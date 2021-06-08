@@ -38,3 +38,10 @@ public boolean add(E e) {
 
 
 ### 8. 【强制】在 subList 场景中，高度注意对父集合元素的增加或删除，均会导致子列表的遍历、增加、删除产生 ConcurrentModificationException 异常。
+Sublist 是 ArrayList 中的一个内部类，在 add 方法中会调用 checkForComodification 方法，如果父集合发生改变则抛出 ConcurrentModificationException 异常
+```java
+private void checkForComodification() {
+    if (ArrayList.this.modCount != this.modCount)
+        throw new ConcurrentModificationException();
+}
+```
