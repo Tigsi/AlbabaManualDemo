@@ -2,6 +2,11 @@ package wss.alibaba.demo.collection;
 
 import java.util.ArrayList;
 import java.util.List;
+/**
+ * @author wangsisi
+ * @email 1874174561@qq.com
+ * @date 2021/6/9 9:07
+ */
 
 public class L6R10 {
     public static void main(String[] args) {
