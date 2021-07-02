@@ -1,4 +1,42 @@
 ### 【强制】避免通过一个类的对象引用访问此类的静态变量或静态方法，无谓增加编译器解析成本，直接用类名来访问即可。
+通过字节码查看细节：
+```java
+public class Test {
+
+    public static void main(String[] args) {
+        Test test = new Test();
+        // 利用两种方法调用 test 字节码的区别。
+        // test.test();    // 方法1
+        Test.test();    // 方法2
+    }
+
+    public static void test() {
+        System.out.println("test");
+    }
+}
+
+```
+方法 1 字节码如下：
+```java
+ 0 new #2 <wss/alibaba/demo/collection/Test>
+ 3 dup
+ 4 invokespecial #3 <wss/alibaba/demo/collection/Test.<init>>
+ 7 astore_1
+ 8 aload_1
+ 9 pop
+10 invokestatic #4 <wss/alibaba/demo/collection/Test.test>
+13 return
+```
+方法 2 字节码如下：
+```java
+ 0 new #2 <wss/alibaba/demo/collection/Test>
+ 3 dup
+ 4 invokespecial #3 <wss/alibaba/demo/collection/Test.<init>>
+ 7 astore_1
+ 8 invokestatic #4 <wss/alibaba/demo/collection/Test.test>
+11 return
+```
+> 由上可知，利用实例对象去调用静态方法会多一步实例变量入栈和出栈的操作，所以此操作会增加额外的性能消耗，要避免。
 
 ### 【强制】所有的覆写方法，必须加@Override 注解。
 > 说明：getObject()与 get0bject()的问题。一个是字母的 O，一个是数字的 0，加@Override 可以准确判断是否覆盖成功。另外，如果在抽象类中对方法签名进行修改，其实现类会马上编译报错。
